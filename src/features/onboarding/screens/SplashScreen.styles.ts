@@ -1,0 +1,63 @@
+import { StyleSheet } from "react-native";
+import { type Palette } from "@/shared/theme/palettes";
+export const createStyles = (c: Palette) =>
+  StyleSheet.create({
+    art: {
+      height: 300,
+      alignItems: "center",
+      justifyContent: "center",
+      marginVertical: 12,
+    },
+    orbit: {
+      position: "absolute",
+      width: 260,
+      height: 260,
+      borderRadius: 130,
+      borderWidth: 1,
+      borderColor: c.border,
+    },
+    orbitSmall: {
+      position: "absolute",
+      width: 205,
+      height: 205,
+      borderRadius: 110,
+      backgroundColor: c.mint,
+    },
+    leaf: {
+      width: 145,
+      height: 145,
+      backgroundColor: c.hero,
+      borderTopLeftRadius: 70,
+      borderTopRightRadius: 70,
+      borderBottomRightRadius: 70,
+      borderBottomLeftRadius: 24,
+      transform: [{ rotate: "-12deg" }],
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    star: { fontSize: 100, color: c.lime, lineHeight: 125 },
+    tag: {
+      position: "absolute",
+      bottom: 27,
+      right: 0,
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 9,
+      backgroundColor: c.surface,
+      padding: 14,
+      borderRadius: 14,
+      borderWidth: 1,
+      borderColor: c.border,
+      transform: [{ rotate: "-5deg" }],
+    },
+    dot: { width: 7, height: 7, borderRadius: 4, backgroundColor: c.primary },
+    tagText: { fontSize: 11, color: c.ink, fontWeight: "500" },
+    spark: { position: "absolute", top: 32, right: 27 },
+    footer: {
+      fontSize: 9,
+      letterSpacing: 2,
+      color: c.muted,
+      textAlign: "center",
+      marginTop: 32,
+    },
+  });
