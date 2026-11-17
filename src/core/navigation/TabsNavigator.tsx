@@ -1,10 +1,11 @@
+import { scaleTextStyle } from "@/shared/theme/typography";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Tabs } from "expo-router";
 import { Feather } from "@expo/vector-icons";
 import { useUI } from "@/shared/theme/useUI";
 
 export default function TabsNavigator() {
-  const { c, t } = useUI();
+  const { c, t, fontScale, language } = useUI();
   const insets = useSafeAreaInsets();
   return (
     <Tabs
@@ -17,10 +18,15 @@ export default function TabsNavigator() {
           backgroundColor: c.background,
           borderTopColor: c.border,
           paddingTop: 9,
-          height: 66 + insets.bottom,
+          height:
+            66 + insets.bottom + Math.ceil(Math.max(0, fontScale - 1) * 20),
           paddingBottom: Math.max(insets.bottom, 8),
         },
-        tabBarLabelStyle: { fontSize: 11, fontWeight: "600" },
+        tabBarLabelStyle: scaleTextStyle(
+          { fontSize: 11, lineHeight: 16, fontWeight: "600" },
+          fontScale,
+          language,
+        ),
         sceneStyle: { backgroundColor: c.background },
       }}
     >

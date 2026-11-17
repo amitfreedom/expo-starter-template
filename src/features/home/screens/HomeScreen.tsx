@@ -1,8 +1,9 @@
+import { AppText as Text } from "@/shared/components/AppText";
 import { GettingStartedChecklist } from "../components/GettingStartedChecklist";
 import { WelcomeCard } from "../components/WelcomeCard";
 import { router } from "expo-router";
 import { Feather } from "@expo/vector-icons";
-import { Pressable, Text, View } from "react-native";
+import { Pressable, View } from "react-native";
 import { Brand } from "@/shared/components/Brand";
 import { PreferencesPage } from "@/features/preferences";
 import { useUI } from "@/shared/theme/useUI";

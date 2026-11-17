@@ -1,5 +1,7 @@
+import { AppText as Text } from "@/shared/components/AppText";
+import { getFieldErrorMessage } from "@/shared/api/error-messages";
 import { router } from "expo-router";
-import { Pressable, Text, View } from "react-native";
+import { Pressable, View } from "react-native";
 import { Brand } from "@/shared/components/Brand";
 import { Button } from "@/shared/components/Button";
 import { ErrorText } from "@/shared/components/ErrorText";
@@ -49,6 +51,7 @@ export function AuthForm({ signup = false }: { signup?: boolean }) {
         {signup && (
           <Field
             label={t("Full name")}
+            error={getFieldErrorMessage(error, "name", t)}
             placeholder={t("Alex Morgan")}
             value={name}
             onChangeText={setName}
@@ -59,6 +62,7 @@ export function AuthForm({ signup = false }: { signup?: boolean }) {
         )}
         <Field
           label={t("Email address")}
+          error={getFieldErrorMessage(error, "email", t)}
           placeholder={t("you@example.com")}
           value={email}
           onChangeText={setEmail}
@@ -69,6 +73,7 @@ export function AuthForm({ signup = false }: { signup?: boolean }) {
         />
         <Field
           label={t("Password")}
+          error={getFieldErrorMessage(error, "password", t)}
           placeholder={t("At least 8 characters")}
           value={password}
           onChangeText={setPassword}
@@ -79,7 +84,7 @@ export function AuthForm({ signup = false }: { signup?: boolean }) {
           onSubmitEditing={submit}
           returnKeyType="go"
         />
-        <ErrorText message={error} />
+        <ErrorText error={error} />
         <Button
           title={signup ? t("Create account  →") : t("Log in  →")}
           onPress={submit}

@@ -4,7 +4,7 @@ import { useAuth } from "../providers/AuthProvider";
 export function useOtpVerification() {
   const { user, challenge, beginVerification, verify } = useAuth();
   const [code, setCode] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState<unknown>(null);
   const [busy, setBusy] = useState(false);
   const [cooldown, setCooldown] = useState(30);
   const input = useRef<TextInputInstance>(null);
@@ -16,11 +16,11 @@ export function useOtpVerification() {
   async function submit() {
     if (busy) return;
     setBusy(true);
-    setError("");
+    setError(null);
     try {
       await verify(code);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Please try again.");
+      setError(err);
     } finally {
       setBusy(false);
     }
@@ -31,11 +31,11 @@ export function useOtpVerification() {
     try {
       await beginVerification(challenge.user);
       setCode("");
-      setError("");
+      setError(null);
       setCooldown(30);
       input.current?.focus();
-    } catch {
-      setError("Unable to request a code. Try again.");
+    } catch (error) {
+      setError(error);
     } finally {
       setBusy(false);
     }
@@ -44,7 +44,10 @@ export function useOtpVerification() {
     user,
     challenge,
     code,
-    setCode,
+    setCode: (value: string) => {
+      setCode(value);
+      setError(null);
+    },
     error,
     busy,
     cooldown,

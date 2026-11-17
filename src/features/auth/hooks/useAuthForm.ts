@@ -6,7 +6,7 @@ export function useAuthForm(signup: boolean) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState<unknown>(null);
   const [busy, setBusy] = useState(false);
   const { beginVerification } = useAuth();
   async function submit() {
@@ -16,7 +16,7 @@ export function useAuthForm(signup: boolean) {
     if (!isEmail(email)) return setError("Please enter a valid email address.");
     if (password.length < 8)
       return setError("Your password needs at least 8 characters.");
-    setError("");
+    setError(null);
     setBusy(true);
     try {
       await beginVerification({
@@ -24,19 +24,28 @@ export function useAuthForm(signup: boolean) {
         email: email.trim().toLowerCase(),
       });
       router.push("/otp");
-    } catch {
-      setError("Something went wrong. Please try again.");
+    } catch (error) {
+      setError(error);
     } finally {
       setBusy(false);
     }
   }
   return {
     name,
-    setName,
+    setName: (value: string) => {
+      setName(value);
+      setError(null);
+    },
     email,
-    setEmail,
+    setEmail: (value: string) => {
+      setEmail(value);
+      setError(null);
+    },
     password,
-    setPassword,
+    setPassword: (value: string) => {
+      setPassword(value);
+      setError(null);
+    },
     error,
     busy,
     submit,

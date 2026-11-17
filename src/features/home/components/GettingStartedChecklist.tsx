@@ -1,4 +1,5 @@
-import { Pressable, Text, View } from "react-native";
+import { AppText as Text } from "@/shared/components/AppText";
+import { Pressable, View } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { useUI } from "@/shared/theme/useUI";
 import { useState } from "react";

@@ -30,12 +30,16 @@ src/
 │   │   └── screens/             Home screen composition
 │   ├── activity/screens/        Activity timeline
 │   ├── profile/screens/         Account details and profile UI
+│   ├── ui-showcase/              Interactive component examples
 │   └── preferences/
 │       ├── components/          Settings controls and page composition
 │       └── index.ts             Public settings UI exports
 └── shared/                      Code used across features
-    ├── components/              Brand, Button, Field, ErrorText, Screen
-    ├── theme/                   Palettes, shared styles, useUI hook
+    ├── api/                     Common Axios client, interceptors, session, errors
+    ├── query/                   QueryClient defaults and tests
+    ├── config/                  Public environment configuration
+    ├── components/              Text, fields, buttons, loader, overlays, layout
+    ├── theme/                   Palettes, tokens, typography, shared styles, useUI hook
     ├── preferences/             App-wide theme/language state and storage
     └── i18n/
         ├── locales/hi.ts        Hindi translations of source English messages
@@ -92,7 +96,7 @@ Avoid circular feature dependencies. If two features need the same independent c
 
 `Screen` is a layout primitive with an optional footer. `PreferencesPage` composes it with the settings panel. This keeps shared layout independent of the preferences feature while preserving settings access on every screen.
 
-The authentication hooks own validation and asynchronous submission. The service owns the demo verification behavior. Screens display state and connect user actions to those hooks. Backend integration should replace the service and update the form hook rather than put network requests into JSX.
+The authentication hooks own validation and asynchronous submission. The service owns the demo verification behavior; the auth provider runs those operations through Query mutations. Real feature API services use the common Axios client. Screens display state and connect user actions to those hooks. Backend integration should replace the service and update the form hook rather than put network requests into JSX.
 
 Preferences are intentionally app-wide: shared controls and every feature need the theme and language before login. Their state/storage live in `shared/preferences`; their visible controls live in `features/preferences`. The storage key remains `@nest/preferences/v1`, so existing selections continue to load after this refactor.
 
@@ -112,4 +116,6 @@ For example, to add an Orders tab:
 5. Keep tests for feature behavior next to that feature when introducing them. Test user-visible behavior and API contracts, rather than duplicating JSX or implementation details.
 6. Run `npm run lint` and `npm run typecheck`, then exercise the new flow. Use `npx expo export --platform all` to verify bundling across platforms when navigation, providers, or shared code changes.
 
-Use PascalCase for React components and their files, `useSomething.ts` for hooks, and descriptive names for services and utilities. Co-locate screen-specific styles as `ScreenName.styles.ts`; reserve `shared/theme/styles.ts` for styles that multiple features actually use. Create a shared API client or additional state library when the application needs it; this starter does not require one just to define the folder structure.
+Use PascalCase for React components and their files, `useSomething.ts` for hooks, and descriptive names for services and utilities. Co-locate screen-specific styles as `ScreenName.styles.ts`; reserve `shared/theme/styles.ts` for styles that multiple features actually use. The shared Axios client and TanStack Query provider are ready for feature services; see [the API guide](api.md). Use that client for network calls and feature Query hooks for server state. Keep UI-only state local unless another feature needs it.
+
+For reusable control props and examples, see [the UI component guide](ui-components.md).

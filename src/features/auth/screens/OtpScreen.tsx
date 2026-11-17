@@ -1,5 +1,6 @@
+import { AppText as Text } from "@/shared/components/AppText";
 import { Redirect, router } from "expo-router";
-import { Pressable, Text, TextInput, View } from "react-native";
+import { Pressable, TextInput, View } from "react-native";
 import { Brand } from "@/shared/components/Brand";
 import { Button } from "@/shared/components/Button";
 import { ErrorText } from "@/shared/components/ErrorText";
@@ -105,7 +106,7 @@ export default function OtpScreen() {
             onSubmitEditing={submit}
           />
         </Pressable>
-        <ErrorText message={error} />
+        <ErrorText error={error} />
         <Button
           title={t("Verify & continue  →")}
           onPress={submit}

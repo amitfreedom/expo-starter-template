@@ -1,5 +1,6 @@
+import { AppText as Text } from "@/shared/components/AppText";
 import { Feather } from "@expo/vector-icons";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import { PreferencesPage } from "@/features/preferences";
 import { useUI } from "@/shared/theme/useUI";
 export default function ActivityScreen() {

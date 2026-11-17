@@ -35,6 +35,13 @@ module.exports = defineConfig([
       "no-restricted-imports": [
         "error",
         {
+          paths: [
+            {
+              name: "axios",
+              message:
+                "Use the common client from @/shared/api/client in feature services.",
+            },
+          ],
           patterns: [
             {
               group: ["@/app", "@/app/**"],
@@ -57,6 +64,13 @@ module.exports = defineConfig([
       "no-restricted-imports": [
         "error",
         {
+          paths: [
+            {
+              name: "axios",
+              message:
+                "Use the common client from @/shared/api/client in feature services.",
+            },
+          ],
           patterns: [
             {
               group: ["@/app", "@/app/**", "@/core", "@/core/**"],
@@ -69,6 +83,20 @@ module.exports = defineConfig([
                 "Use a feature’s public index across features, and relative imports inside the same feature.",
             },
           ],
+        },
+      ],
+    },
+  },
+  {
+    files: ["src/features/**/services/**/*.{ts,tsx}"],
+    rules: {
+      "no-restricted-syntax": [
+        "error",
+        {
+          selector:
+            "CallExpression[callee.object.name='apiClient'][arguments.0.type='Literal']",
+          message:
+            "Keep backend paths in shared/api/endpoints.ts and use API_ENDPOINTS in services.",
         },
       ],
     },

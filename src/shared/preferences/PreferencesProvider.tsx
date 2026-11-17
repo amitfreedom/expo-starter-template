@@ -1,4 +1,8 @@
 import {
+  clampFontScale,
+  type FontScaleUpdate,
+} from "@/shared/theme/font-scale";
+import {
   createContext,
   useCallback,
   useContext,
@@ -23,12 +27,14 @@ import {
 type Preferences = {
   themeMode: ThemeMode;
   language: Language;
+  fontScale: number;
   resolvedTheme: "light" | "dark";
   colors: Palette;
   ready: boolean;
   storageError: boolean;
   setThemeMode: (mode: ThemeMode) => void;
   setLanguage: (language: Language) => void;
+  setFontScale: (scale: FontScaleUpdate) => void;
   t: (key: MessageKey, params?: Record<string, string | number>) => string;
 };
 const PreferencesContext = createContext<Preferences | null>(null);
@@ -40,6 +46,14 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
   const [language, setLanguage] = useState<Language>(
     DEFAULT_PREFERENCES.language,
   );
+  const [fontScale, updateFontScale] = useState(DEFAULT_PREFERENCES.fontScale);
+  const setFontScale = useCallback(
+    (scale: FontScaleUpdate) =>
+      updateFontScale((current) =>
+        clampFontScale(typeof scale === "function" ? scale(current) : scale),
+      ),
+    [],
+  );
   const [ready, setReady] = useState(false);
   const [storageError, setStorageError] = useState(false);
   const writes = useRef(Promise.resolve());
@@ -50,6 +64,7 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
         if (!active) return;
         setThemeMode(preferences.themeMode);
         setLanguage(preferences.language);
+        updateFontScale(preferences.fontScale);
       })
       .catch(() => {
         if (active) setStorageError(true);
@@ -65,10 +80,10 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
     if (!ready) return;
     // Serialize writes so rapid changes cannot restore an older selection.
     writes.current = writes.current
-      .then(() => writePreferences({ themeMode, language }))
+      .then(() => writePreferences({ themeMode, language, fontScale }))
       .then(() => setStorageError(false))
       .catch(() => setStorageError(true));
-  }, [themeMode, language, ready]);
+  }, [themeMode, language, fontScale, ready]);
   const resolvedTheme =
     themeMode === "system"
       ? systemTheme === "dark"
@@ -85,12 +100,14 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
       value={{
         themeMode,
         language,
+        fontScale,
         resolvedTheme,
         colors: resolvedTheme === "dark" ? darkColors : lightColors,
         ready,
         storageError,
         setThemeMode,
         setLanguage,
+        setFontScale,
         t,
       }}
     >

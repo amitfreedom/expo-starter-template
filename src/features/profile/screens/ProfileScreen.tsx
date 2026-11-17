@@ -1,6 +1,8 @@
+import { AppText as Text } from "@/shared/components/AppText";
+import { router } from "expo-router";
 import { useState } from "react";
 import { Feather } from "@expo/vector-icons";
-import { Pressable, Text, View } from "react-native";
+import { Pressable, View } from "react-native";
 import { Button } from "@/shared/components/Button";
 import { PreferencesPage, PreferencesPanel } from "@/features/preferences";
 import { useUI } from "@/shared/theme/useUI";
@@ -115,8 +117,15 @@ export default function ProfileScreen() {
           </Text>
         )}
       </Pressable>
+      <View style={{ marginTop: 20 }}>
+        <Button
+          title={t("UI Components")}
+          variant="outline"
+          onPress={() => router.push("/components")}
+        />
+      </View>
       <View style={{ marginTop: 28 }}>
-        <Button title={t("Log out")} secondary onPress={signOut} />
+        <Button title={t("Log out")} variant="secondary" onPress={signOut} />
       </View>
       <Text
         style={{

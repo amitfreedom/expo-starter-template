@@ -35,7 +35,8 @@
             "image": "./assets/images/nest-splash.png"
           }
         }
-      ]
+      ],
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true,

@@ -1,7 +1,8 @@
+import { AppText as Text } from "@/shared/components/AppText";
 import { createStyles } from "./SplashScreen.styles";
 import { router } from "expo-router";
 import { useMemo } from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import { Brand } from "@/shared/components/Brand";
 import { Button } from "@/shared/components/Button";
 import { PreferencesPage } from "@/features/preferences";
@@ -16,7 +17,9 @@ export default function SplashScreen() {
         <View style={styles.orbit} />
         <View style={styles.orbitSmall} />
         <View style={styles.leaf}>
-          <Text style={styles.star}>✳</Text>
+          <Text appFontScaling={false} style={styles.star}>
+            ✳
+          </Text>
         </View>
         <View style={styles.tag}>
           <View style={styles.dot} />

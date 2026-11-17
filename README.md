@@ -53,9 +53,11 @@ npm run web
 
 Authentication is simulated: no account is created, no email/SMS is sent, and passwords are never stored. Login accepts arbitrary credentials that pass form validation. The session and checklist live in memory and reset when the app reloads. Activity entries are illustrative.
 
-## Theme and language
+## Theme, language, and font size
 
 Open **Profile → Preferences** to select **Light**, **Dark**, or **System**, and **English** or **हिन्दी**. Before login, expand **Theme and language** at the bottom of any screen. Selections apply immediately across all screens and are saved on this device with AsyncStorage, including after logout or restarting the app. System is the default theme and follows live device appearance changes; English is the default language.
+
+Open **Profile → Preferences → Font size** to resize text across the app. Choose Small, Default, Large, Extra large, or Largest, or use the minus/plus controls for 5% adjustments between 85% and 150%. A live preview and reset button are included. The choice is saved with theme/language and applies to screens, inputs, buttons, dialogs, sheets, and bottom-tab labels, including after logout or restart.
 
 Both languages cover screen content, navigation labels, form placeholders, validation errors, OTP messages/timers, and accessibility labels. Account names and email addresses stay as entered. Hindi uses spacing and line heights appropriate for Devanagari. Storage failures keep the app usable and show a message in Preferences.
 
@@ -75,15 +77,30 @@ src/
 
 Features own their screens, components, hooks, services, and types. ESLint checks import boundaries so shared modules stay independent and feature internals remain private. See [the architecture guide](docs/architecture.md) for the complete directory map, dependency rules, and steps to add a new feature.
 
-## Connect your backend
+## Reusable UI library
 
-Replace `src/features/auth/services/auth-service.ts` and update the submit handler in `src/features/auth/hooks/useAuthForm.ts` to call your signup/login endpoints with the entered credentials. Your server should issue a verification challenge and send the code. Verify OTP codes, expiry, resend limits, and retry limits on the server. Remove the hard-coded code and demo hints. Update `src/features/auth/providers/AuthProvider.tsx` to store and restore your session securely (for example, with Expo SecureStore on native) and revoke it on logout. Client-side route guards are for navigation; authorize every protected API request on the server.
+Common components live in `src/shared/components`: `AppText`, `Field`, `MultilineField`, `Button` (primary/secondary/outline/ghost), `Loader`, `AppModal`, `DialogBox`, and `BottomSheet`. Typography variants, font sizes, weights, spacing, and responsive scaling live in `src/shared/theme`.
+
+Open **Profile → UI Components** to try the library in the app, including modal/dialog/sheet behavior and Hindi/dark-mode previews. See [the UI component guide](docs/ui-components.md) for props and usage examples.
+
+## API services
+
+TanStack Query + Axios are configured globally. Feature services import the single client from `src/shared/api/client.ts`; shared request/response interceptors manage token and language headers, error normalization, and authenticated `401` handling. All backend paths are defined in `src/shared/api/endpoints.ts`. Shared error helpers provide localized messages and form field validation errors. Logout clears the session and Query cache. Native focus and network changes are connected to Query's lifecycle managers. In development, interceptors print structured JSON request/response/error logs with sensitive fields masked; set `EXPO_PUBLIC_API_LOGGING=false` to disable them.
+
+```sh
+cp .env.example .env.local
+```
+
+Set `EXPO_PUBLIC_API_URL` in `.env.local` to your backend's base URL, then reload the app. See [the API guide](docs/api.md) for service/query/mutation examples, retry defaults, error handling, and real authentication integration. `features/profile` contains an example protected profile service and Query hooks; its endpoint contract must be adapted to your backend.
+
+The login/OTP flow remains a working local demo using Query mutations. For real authentication, replace the demo service operations and form hook, then pass your backend's user and access token to `signIn`. Access tokens are held in memory; persistent login and token refresh need your backend's session strategy.
 
 Change the light/dark palettes in `src/shared/theme/palettes.ts` for colors, `Brand` in `src/shared/components/Brand.tsx` for branding, and the Nest images in `assets/images` for launcher/splash artwork. Configure your own app name, slug, scheme, and application identifiers in `app.json` before distribution.
 
 ## Validation
 
 ```sh
+npm test
 npm run typecheck
 npm run lint
 npx expo-doctor

@@ -1,2 +1,2 @@
 export { AuthProvider, useAuth } from "./providers/AuthProvider";
-export type { User, Challenge } from "./types/auth";
+export type { User, Challenge, AuthSession } from "./types/auth";

@@ -1,5 +1,7 @@
+import { FontSizeSettings } from "./FontSizeSettings";
+import { AppText as Text } from "@/shared/components/AppText";
 import { useState } from "react";
-import { Pressable, Text, View } from "react-native";
+import { Pressable, View } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { useUI } from "@/shared/theme/useUI";
 export function PreferencesPanel({
@@ -164,6 +166,8 @@ export function PreferencesPanel({
                   <Text
                     style={{
                       fontSize: 14,
+                      flexShrink: 1,
+                      minWidth: 0,
                       color: language === option.value ? c.primary : c.ink,
                       fontWeight: language === option.value ? "700" : "500",
                     }}
@@ -177,6 +181,8 @@ export function PreferencesPanel({
               ))}
             </View>
           </View>
+          <View style={{ height: 1, backgroundColor: c.border }} />
+          <FontSizeSettings />
           <Text
             accessibilityRole={storageError ? "alert" : undefined}
             style={{

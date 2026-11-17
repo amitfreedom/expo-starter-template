@@ -1,6 +1,8 @@
 import { StyleSheet } from "react-native";
 import { type Palette } from "./palettes";
-export const createStyles = (c: Palette) =>
+import { getTypography } from "./typography";
+import { spacing, radii } from "./tokens";
+export const createStyles = (c: Palette, language = "en", width = 390) =>
   StyleSheet.create({
     safe: { flex: 1, backgroundColor: c.background },
     page: {
@@ -9,13 +11,13 @@ export const createStyles = (c: Palette) =>
       maxWidth: 480,
       alignSelf: "center",
       padding: 26,
-      paddingBottom: 40,
+      paddingBottom: spacing["3xl"],
     },
     brand: { flexDirection: "row", alignItems: "center", gap: 9 },
     mark: {
       width: 36,
       height: 36,
-      borderRadius: 12,
+      borderRadius: radii.md,
       backgroundColor: c.primary,
       alignItems: "center",
       justifyContent: "center",
@@ -34,46 +36,21 @@ export const createStyles = (c: Palette) =>
       letterSpacing: -1.2,
     },
     eyebrow: {
+      ...getTypography("overline", { language, width }),
       color: c.primary,
-      fontSize: 11,
-      fontWeight: "700",
-      letterSpacing: 2,
-      marginBottom: 12,
+      marginBottom: spacing.md,
     },
-    title: {
-      fontSize: 36,
-      lineHeight: 43,
-      letterSpacing: -1.4,
-      fontWeight: "700",
-      color: c.ink,
+    title: { ...getTypography("h1", { language, width }), color: c.ink },
+    subtitle: {
+      ...getTypography("bodySmall", { language, width }),
+      color: c.muted,
+      marginTop: 10,
     },
-    subtitle: { fontSize: 15, lineHeight: 24, color: c.muted, marginTop: 10 },
-    label: { color: c.ink, fontSize: 13, fontWeight: "600" },
-    field: {
-      flexDirection: "row",
-      alignItems: "center",
-      borderWidth: 1,
-      borderColor: c.border,
-      backgroundColor: c.surface,
-      borderRadius: 14,
-      paddingHorizontal: 16,
-      minHeight: 56,
-    },
-    input: { flex: 1, paddingVertical: 16, fontSize: 15, color: c.ink },
-    button: {
-      backgroundColor: c.primary,
-      borderRadius: 15,
-      minHeight: 56,
-      justifyContent: "center",
-      alignItems: "center",
-      paddingHorizontal: 20,
-    },
-    secondary: { backgroundColor: c.mint },
-    buttonText: { color: c.onPrimary, fontWeight: "600", fontSize: 15 },
-    link: { color: c.primary, fontWeight: "600", fontSize: 13 },
+    label: { ...getTypography("label", { language, width }), color: c.ink },
+    link: { ...getTypography("label", { language, width }), color: c.primary },
     card: {
       backgroundColor: c.surface,
-      borderRadius: 22,
+      borderRadius: radii.xl,
       padding: 22,
       borderWidth: 1,
       borderColor: c.border,
@@ -84,10 +61,8 @@ export const createStyles = (c: Palette) =>
       justifyContent: "space-between",
     },
     sectionTitle: {
-      fontSize: 19,
-      fontWeight: "700",
+      ...getTypography("title", { language, width }),
       color: c.ink,
-      letterSpacing: -0.4,
     },
     divider: { height: 1, backgroundColor: c.border, flex: 1 },
   });
