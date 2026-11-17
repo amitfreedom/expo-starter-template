@@ -2,6 +2,21 @@
 
 A mobile-first TypeScript starter with light/dark themes, English/Hindi translations, shared UI components, and an end-to-end demo authentication flow.
 
+## Create a new app from this template
+
+Run this command to create a new Expo project with the screens, folder structure, themes, and translations included:
+
+```sh
+npx create-expo-app@latest my-new-app --template https://github.com/amitfreedom/expo-starter-template
+```
+
+Replace `my-new-app` with your project name, then start the app:
+
+```sh
+cd my-new-app
+npm start
+```
+
 ## Run
 
 Use Node 24.3+ (recommended: `nvm use`, using the included `.nvmrc`) or Node 22.13+.
